@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float rotationSpeed = 500f;
+    [SerializeField] private float gravityMultiplier = 3f;
+    [SerializeField] private float jumpForce = 10f;
     private CharacterController characterController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 velocity;
     private float moveAmount;
+    private float verticalVelocity;
 
     private void MovePlayer()
     {
@@ -32,6 +35,27 @@ public class PlayerController : MonoBehaviour
         moveAmount = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
         velocity = new Vector3(horizontal, 0f, vertical) * movementSpeed;
 
+        if (characterController.isGrounded)
+        {
+            verticalVelocity = -2f;
+            if (Input.GetButtonDown("Jump"))
+            {
+                verticalVelocity = jumpForce;
+            }
+        }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * gravityMultiplier * Time.deltaTime;
+
+            // Cut jump short if player releases jump button
+            if (Input.GetButtonDown("Jump") && verticalVelocity > 0f)
+            {
+                verticalVelocity *= 0.5f;
+            }
+        }
+
+        velocity.y = verticalVelocity;
+
         characterController.Move(velocity * Time.deltaTime);
     }
 
@@ -39,7 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         if (moveAmount > 0)
         {
-            var targetRotation = Quaternion.LookRotation(velocity);
+            var targetRotation = Quaternion.LookRotation(new Vector3(velocity.x, 0f, velocity.z));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
