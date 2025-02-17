@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         moveAmount = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
         velocity = new Vector3(horizontal, 0f, vertical) * movementSpeed;
+        velocity = Quaternion.LookRotation(new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z)) * velocity;
 
         if (characterController.isGrounded)
         {
