@@ -33,3 +33,5 @@ This project is a basic third-person character controller designed as part of a 
     Look: Mouse Movement
 
 ## Video Demo
+
+https://github.com/user-attachments/assets/5a1b5448-d9ee-4254-99d9-de7c240c71fb
