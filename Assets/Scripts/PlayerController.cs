@@ -13,8 +13,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked; // TODO: Move this to GameManager
-        Cursor.visible = false; // TODO: Move this to GameManager
     }
 
     // Update is called once per frame
